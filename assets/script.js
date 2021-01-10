@@ -32,17 +32,42 @@ console.log(response.list[0].main.temp)
 var tempRound = Math.round(response.list[0].main.temp)
 console.log(tempRound);
 // $("#topText").empty();
-$("#topText").empty().append(` Temperature: ${tempRound}°F`)
-    
-    
+$("#topText").empty().append(` Temperature: ${tempRound}°F `)
+// Icon
+var iconCode = (response.list[0].weather[0].icon)
 
+$("#topText").append(`<img id="icon" src="http://openweathermap.org/img/wn/${iconCode}@2x.png"/> `)
     // Humidity 
-
+$("#topText").append(`<p> Humidity: ${response.list[0].main.humidity}% </p>`) 
     // Windspeed 
-
+$("#topText").append(`<p> Windspeed: ${response.list[0].wind.speed} mph </p>`) 
     // UV Index 
+ var lat = (response.city.coord.lat)
+ console.log((response.city.coord.lat));   
+ var lon =(response.city.coord.lon)
+ console.log(lon);
+ var uvAPI=`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${api}`
+ $.ajax({
+    url: uvAPI,
+    method: "GET"
+  }).then(function(response) {
+    console.log(response);
+if (response.current.uvi === < 3){
+
+// change button green
+
+} else if (response.current.uvi === > 8 ) 
+
+// add class warning to button 
+
+else (response.current.uvi)
+
+// make button yellow 
+
+
+
   })
 
- }
+ })
+}
 })
-
