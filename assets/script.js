@@ -17,7 +17,7 @@ $("#searchBtn").on("click", function (event) {
  if ($(this)){
 var searchCity =$("#searchCity").val();
 console.log(searchCity);
-var openURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchCity}&appid=${api}`
+var openURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchCity}&units=imperial&appid=${api}`
 $.ajax({
     url: openURL,
     method: "GET"
@@ -26,7 +26,21 @@ $.ajax({
       console.log (response.city.name);
     //   print the name of the city to the string
     $("#cityName").html(`<h5>${response.city.name}</h5>`);
+    
+    // Temp
+console.log(response.list[0].main.temp)
+var tempRound = Math.round(response.list[0].main.temp)
+console.log(tempRound);
+// $("#topText").empty();
+$("#topText").empty().append(` Temperature: ${tempRound}°F`)
+    
+    
 
+    // Humidity 
+
+    // Windspeed 
+
+    // UV Index 
   })
 
  }
