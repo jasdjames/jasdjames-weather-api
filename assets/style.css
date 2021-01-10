@@ -1,3 +1,17 @@
-#topBox{
-    width: 100%;
+li.list-group-item, .card.mt-2 {
+    
+    /* Color */
+    background-color: darkorange;
+    color: ghostwhite;
 }
+
+section{
+    background-color: #084887;
+    /* color: ghostwhite; */`
+}
+
+button {
+    background-color: #909CC2;
+    color: ghostwhite;
+}
+
