@@ -52,15 +52,22 @@ $("#topText").append(`<p> Windspeed: ${response.list[0].wind.speed} mph </p>`)
     method: "GET"
   }).then(function(response) {
     console.log(response);
-if (response.current.uvi === < 3){
+    console.log(response.current.uvi);
+
+
+if (response.current.uvi < 3){
 
 // change button green
+$("#uvBtn").removeClass().addClass("btn btn-success disabled");
+} else if (response.current.uvi > 8 ) {
+$("#uvBtn").removeClass().addClass("btn btn-danger disabled");  
 
-} else if (response.current.uvi === > 8 ) 
+}else{
+    $("#uvBtn").removeClass().addClass("btn btn-warning disabled"); 
+}
+$("#uvBtn").empty().append(`UV Index: ${response.current.uvi} `)
 
-// add class warning to button 
-
-else (response.current.uvi)
+// figure out how to clear the uv index between clicks
 
 // make button yellow 
 
