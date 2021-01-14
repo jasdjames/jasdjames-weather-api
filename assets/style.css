@@ -5,9 +5,9 @@ li.list-group-item, .card.mt-2 {
     color: ghostwhite;
 }
 
-section{
+body{
     background-color: #084887;
-    /* color: ghostwhite; */`
+
 }
 
 button {
@@ -15,8 +15,18 @@ button {
     color: ghostwhite;
 }
 
-.blue{
-color: navy;
-font-size: xx-large;
+.navbar{
+    background-color:lightgrey;
 }
+
+#dateToday{
+    background-color: #909CC2;
+}
+#topBox{
+    margin-bottom: 2rem;
+}
+.card-body{
+    margin-left: 2rem;
+
+};
 
