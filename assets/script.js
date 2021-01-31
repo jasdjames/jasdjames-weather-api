@@ -21,11 +21,14 @@ $("#searchBtn").on("click", function () {
     console.log($("#searchCity").val());
  searchFunc($("#searchCity").val())
 })
+
+
  function searchFunc(searchCity) {
     
         
         console.log(searchCity);
         var openURL = `https://api.openweathermap.org/data/2.5/forecast?q=${searchCity}&units=imperial&appid=${api}`
+
         $.ajax({
             url: openURL,
             method: "GET"
@@ -51,37 +54,70 @@ $("#searchBtn").on("click", function () {
             // Windspeed 
             $("#topText").append(`<p> Windspeed: ${response.list[0].wind.speed} mph </p>`)
             
-            localStorage.setItem("value", searchCity)
+            cityArr2.push(searchCity)
+
+            var strArray = JSON.stringify(cityArr2)
+
+            console.log('STRY ARRAY!!', strArray)
             
-
-          if (cityArr2.length> 5){  
-          }else{
-          cityArr2.push(localStorage.getItem("value"))
-
-           console.log(cityArr2);
-          }
-        
-                        
-
-            
-            if (cityArr2.length > 5) {
-                cityArr2.splice(0, 1, searchCity)
-                console.log(cityArr2);
-        
-
-            $("#city1").text("").append(cityArr2[0])
-            
+            console.log('REG ARRAY !!', cityArr2)
+            localStorage.setItem("value", strArray)
 
 
-            }else {
+            var pastHistory = JSON.parse(localStorage.getItem("value"))
 
-            $("#city1").text("").append(cityArr2[0])
-            $("#city2").text("").append(cityArr2[1])
-            $("#city3").text("").append(cityArr2[2])
-            $("#city4").text("").append(cityArr2[3])
-            $("#city5").text("").append(cityArr2[4])
+            console.log('Grabbing the histroy from local!!!',pastHistory)
+            $('#history').empty()
 
+            for (let i = 0; i < pastHistory.length; i++) {
+                console.log('wha is i ???', i)
+                     //1 make a pice of html!!
+
+                var li = $('<li>')
+
+                //2 dress that html up how u want it!! class names, text
+                li.addClass('list-group-item')
+                li.text(pastHistory[i])
+
+                //3 stick that html on to the page!! .append()
+                $('#history').append(li)
+                    
             }
+
+    
+
+
+
+
+        //   if (cityArr2.length> 5){  
+
+        //   }else{
+        //   cityArr2.push(localStorage.getItem("value"))
+
+        //    console.log(cityArr2);
+        //   }
+        
+        //                 
+
+            
+        //     if (cityArr2.length > 5) {
+        //         cityArr2.splice(0, 1, searchCity)
+        //         console.log(cityArr2);
+        
+
+        //     $("#city1").text("").append(cityArr2[0])
+            
+
+
+        //     }else {
+
+        //     $("#city1").text("").append(cityArr2[0])
+        //     $("#city2").text("").append(cityArr2[1])
+        //     $("#city3").text("").append(cityArr2[2])
+        //     $("#city4").text("").append(cityArr2[3])
+        //     $("#city5").text("").append(cityArr2[4])
+
+        //     }
 
             
             
@@ -90,26 +126,52 @@ $("#searchBtn").on("click", function () {
 
             // Card 1 
             var dateArr = [response.list[0], response.list[8], response.list[16], response.list[24], response.list[32]];
-            console.log(dateArr);
+            console.log('DATA ARRAY ?!?',dateArr);
             console.log((DateTime.fromSeconds(dateArr[2].dt)));
 
+            for (let i = 0; i < dateArr.length; i++) {      
+                
+                //1 make html
+                var cardContainer = $('<div>')
+                var cardBody = $('<div>')
+                var cardFooter = $('<div>')
+                var title = $('<h5>')
+                var text = $('<p>')
 
 
-            // There is a better way to do this 
+                //2 dress it up how we want
+                cardContainer.addClass('card')
+                cardBody.addClass('card-body')
+                cardFooter.addClass('card-footer')
+
+                title.text((DateTime.fromSeconds(dateArr[i].dt)).toLocaleString(DateTime.DATE_HUGE))
+                title.addClass('card-title')
+                text.append(`Temperature: ${(Math.round(dateArr[i].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[i].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[4].main.humidity}% </p> <p> Windspeed: ${dateArr[0].wind.speed} mph </p>`)
+                text.addClass('card-text')
+
+                // stick that html chunck on the page!!
+                cardBody.append(title, text)
+                cardContainer.append(cardBody, cardFooter)
+                $('.card-deck').append(cardContainer)
+            }
+
+
+
+            // There is a better way to do this - My tutor helped me figure this out - 1/25
             // Will Utterback tried to  help me think of ways to loop through this code - I still am having trouble getting the loops to work 
             // $('card-title').each(function (el) { ? 
             // If data number === # in array --- put the replace the index in dateArr - How do I write that?
-            $("#b1Title").empty().append((DateTime.fromSeconds(dateArr[0].dt)).toLocaleString(DateTime.DATE_HUGE))
-            $("#b2Title").empty().append((DateTime.fromSeconds(dateArr[1].dt)).toLocaleString(DateTime.DATE_HUGE))
-            $("#b3Title").empty().append((DateTime.fromSeconds(dateArr[2].dt)).toLocaleString(DateTime.DATE_HUGE))
-            $("#b4Title").empty().append((DateTime.fromSeconds(dateArr[3].dt)).toLocaleString(DateTime.DATE_HUGE))
-            $("#b5Title").empty().append((DateTime.fromSeconds(dateArr[4].dt)).toLocaleString(DateTime.DATE_HUGE))
+            // $("#b1Title").empty().append((DateTime.fromSeconds(dateArr[0].dt)).toLocaleString(DateTime.DATE_HUGE))
+            // $("#b2Title").empty().append((DateTime.fromSeconds(dateArr[1].dt)).toLocaleString(DateTime.DATE_HUGE))
+            // $("#b3Title").empty().append((DateTime.fromSeconds(dateArr[2].dt)).toLocaleString(DateTime.DATE_HUGE))
+            // $("#b4Title").empty().append((DateTime.fromSeconds(dateArr[3].dt)).toLocaleString(DateTime.DATE_HUGE))
+            // $("#b5Title").empty().append((DateTime.fromSeconds(dateArr[4].dt)).toLocaleString(DateTime.DATE_HUGE))
 
-            $("#b1Text").empty().append(`Temperature: ${(Math.round(dateArr[0].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[0].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[0].main.humidity}% </p> <p> Windspeed: ${dateArr[0].wind.speed} mph </p>`)
-            $("#b2Text").empty().append(`Temperature: ${(Math.round(dateArr[1].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[1].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[1].main.humidity}% </p> <p> Windspeed: ${dateArr[1].wind.speed} mph </p>`)
-            $("#b3Text").empty().append(`Temperature: ${(Math.round(dateArr[2].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[2].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[2].main.humidity}% </p> <p> Windspeed: ${dateArr[2].wind.speed} mph </p>`)
-            $("#b4Text").empty().append(`Temperature: ${(Math.round(dateArr[3].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[3].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[3].main.humidity}% </p> <p> Windspeed: ${dateArr[3].wind.speed} mph </p>`)
-            $("#b5Text").empty().append(`Temperature: ${(Math.round(dateArr[4].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[4].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[4].main.humidity}% </p> <p> Windspeed: ${dateArr[4].wind.speed} mph </p>`)
+            // $("#b1Text").empty().append(`Temperature: ${(Math.round(dateArr[0].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[0].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[0].main.humidity}% </p> <p> Windspeed: ${dateArr[0].wind.speed} mph </p>`)
+            // $("#b2Text").empty().append(`Temperature: ${(Math.round(dateArr[1].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[1].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[1].main.humidity}% </p> <p> Windspeed: ${dateArr[1].wind.speed} mph </p>`)
+            // $("#b3Text").empty().append(`Temperature: ${(Math.round(dateArr[2].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[2].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[2].main.humidity}% </p> <p> Windspeed: ${dateArr[2].wind.speed} mph </p>`)
+            // $("#b4Text").empty().append(`Temperature: ${(Math.round(dateArr[3].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[3].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[3].main.humidity}% </p> <p> Windspeed: ${dateArr[3].wind.speed} mph </p>`)
+            // $("#b5Text").empty().append(`Temperature: ${(Math.round(dateArr[4].main.temp))}°F <img id="icon" src="http://openweathermap.org/img/wn/${dateArr[4].weather[0].icon}@2x.png"/> <p> Humidity: ${dateArr[4].main.humidity}% </p> <p> Windspeed: ${dateArr[4].wind.speed} mph </p>`)
 
 
 
@@ -120,6 +182,7 @@ $("#searchBtn").on("click", function () {
             var lon = (response.city.coord.lon)
             console.log(lon);
             var uvAPI = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${api}`
+
             $.ajax({
                 url: uvAPI,
                 method: "GET"
@@ -139,12 +202,6 @@ $("#searchBtn").on("click", function () {
                     $("#uvBtn").removeClass().addClass("btn btn-warning disabled");
                 }
                 $("#uvBtn").empty().append(`UV Index: ${response.current.uvi} `)
-
-
-
-
-
-
 
             })
 
